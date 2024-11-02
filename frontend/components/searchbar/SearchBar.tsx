@@ -2,17 +2,19 @@
 
 import { SwitzerRegular } from "../../lib/localFont";
 import Image from "next/image";
+import SearchBarButton from "./SearchBarButton";
 
 const SearchBar = () => {
     return(
-        <div className={SwitzerRegular.className + " flex flex-row p-2 rounded-full"}>
-            <Image src="/icons/aircraft.svg" width={24} height={24} alt="plane image" className="absolute select-none float-left justify-center self-center ml-5 mt-0.5"/>
+        <div className={SwitzerRegular.className + " flex flex-row gap-x-4 p-2 rounded-full w-1/3 text-xl text-white placeholder-white dark:text-white bg-gradient-to-br from-[#13F55F] to-[#098AAD]"}>
+            <Image src="/icons/aircraft.svg" width={24} height={24} alt="plane image" className="select-none float-left justify-center self-center ml-5 mt-0.5"/>
             <input
                 type="text"
                 placeholder="Enter your airframe code"
-                className="rounded-l-full w-full pl-14 p-4 text-xl text-white placeholder-white dark:text-white bg-gradient-to-br from-[#13F55F] to-[#098AAD]"
+                className="text-xl text-white placeholder-white dark:text-white bg-transparent w-full"
                 onChange={() => {console.log("Search bar changed")}}
-            />  
+            />
+            <SearchBarButton/>
         </div>
     )
 };

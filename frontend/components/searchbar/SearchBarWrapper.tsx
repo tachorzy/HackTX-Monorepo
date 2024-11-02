@@ -12,7 +12,7 @@ const SearchBarWrapper = () => {
 
     return(
         <form 
-            className={SwitzerRegular.className + " flex flex-row p-2 rounded-full"}
+            className={SwitzerRegular.className + " flex flex-row p-2 rounded-full gap-x-0.5"}
             onSubmit={handleSubmit}
         >
             <SearchBar/>
