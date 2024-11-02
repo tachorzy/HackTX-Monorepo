@@ -1,6 +1,6 @@
 "use client";
 
-import { SwitzerRegular } from "../lib/localFont";
+import { SwitzerRegular } from "../../lib/localFont";
 import Image from "next/image";
 
 const SearchBar = () => {
@@ -10,7 +10,7 @@ const SearchBar = () => {
             <input
                 type="text"
                 placeholder="Enter your airframe code"
-                className="rounded-full w-full pl-14 p-4 text-xl text-white placeholder-white dark:text-white bg-gradient-to-br from-[#13F55F] to-[#098AAD]"
+                className="rounded-l-full w-full pl-14 p-4 text-xl text-white placeholder-white dark:text-white bg-gradient-to-br from-[#13F55F] to-[#098AAD]"
                 onChange={() => {console.log("Search bar changed")}}
             />  
         </div>
