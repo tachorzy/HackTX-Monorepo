@@ -1,13 +1,26 @@
 "use client";
 
+import { useState } from "react";
 import { SwitzerRegular } from "../../lib/localFont";
 import Image from "next/image";
 import SearchBarButton from "./SearchBarButton";
 
 const SearchBar = () => {
-    const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    const [airframeCode, setAirframeCode] = useState("");
+
+    const handleKeyPress = async (event: React.KeyboardEvent<HTMLInputElement>) => {
         if (event.key === 'Enter') {
+            event.preventDefault();
+
             console.log("Enter key pressed");
+    
+            try {
+                const response = await fetch(`/api/airframe/${airframeCode}`);
+                const airframe = await response.json();
+                console.log(airframe);
+            } catch (error) {
+                console.error(error);
+            }
         }
     };
 
@@ -18,7 +31,7 @@ const SearchBar = () => {
                 type="text"
                 placeholder="Enter your airframe code"
                 className="text-xl text-white placeholder-white dark:text-white bg-transparent w-full p-2"
-                onChange={() => {console.log("Search bar changed")}}
+                onChange={(event) => setAirframeCode(event.target.value)}
                 onKeyUp={handleKeyPress}
             />
             <SearchBarButton/>
