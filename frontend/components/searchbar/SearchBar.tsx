@@ -1,11 +1,13 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { SwitzerRegular } from "../../lib/localFont";
 import Image from "next/image";
 import SearchBarButton from "./SearchBarButton";
 
 const SearchBar = () => {
+    const router = useRouter();    
     const [airframeCode, setAirframeCode] = useState("");
 
     const handleKeyPress = async (event: React.KeyboardEvent<HTMLInputElement>) => {
@@ -14,13 +16,7 @@ const SearchBar = () => {
 
             console.log("Enter key pressed");
     
-            try {
-                const response = await fetch(`/api/airframe/${airframeCode}`);
-                const airframe = await response.json();
-                console.log(airframe);
-            } catch (error) {
-                console.error(error);
-            }
+            router.push(`/airframe/${airframeCode}`);
         }
     };
 
