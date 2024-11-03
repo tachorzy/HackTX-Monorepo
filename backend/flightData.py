@@ -35,7 +35,6 @@ def connect_to_db():
             port=DB["port"]
         )
         cursor = conn.cursor()
-        print("Connection to database successful!")
         return conn, cursor
     except Exception as e:
         print("Error connecting to the database:", e)
@@ -56,6 +55,17 @@ def read_flight_data(aircraft: str, distance: int):
     """API endpoint to get flight data."""
     flight_data = get_flight_data(aircraft, distance)
     return flight_data
+
+@app.get("/db-status")
+def db_status():
+    """Check the status of the database connection."""
+    conn, cursor = connect_to_db()
+    if conn and cursor:
+        cursor.close()
+        conn.close()
+        return {"status": "success", "message": "Connected to the database successfully."}
+    else:
+        raise HTTPException(status_code=500, detail="Failed to connect to the database.")
 
 # To run the application, use the command:
 # uvicorn flightData:app --reload
