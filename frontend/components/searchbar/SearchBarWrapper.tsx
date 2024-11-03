@@ -2,6 +2,7 @@
 
 import { SwitzerRegular } from "../../lib/localFont";
 import SearchBar from "./SearchBar";
+// import SearchBarButton from "./SearchBarButton";
 
 const SearchBarWrapper = () => {
 
