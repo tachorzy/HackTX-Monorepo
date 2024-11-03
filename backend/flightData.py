@@ -1,29 +1,61 @@
 import requests
-from datetime import datetime
+import os
+import psycopg2
+from dotenv import load_dotenv
+from fastapi import FastAPI, HTTPException
+
+# Load environment variables from .env file
+load_dotenv()
+
+# Database connection details
+SUPABASE_URL = os.getenv("user")
+SUPABASE_PW = os.getenv("password")
+SUPABASE_HOST = os.getenv("host")
+SUPABASE_PORT = os.getenv("port")
+SUPABASE_NAME = os.getenv("dbname")
+
+DB = {
+    "user": SUPABASE_URL,
+    "password": SUPABASE_PW,
+    "host": SUPABASE_HOST,
+    "port": SUPABASE_PORT,
+    "dbname": SUPABASE_NAME
+}
+
+app = FastAPI()
+
+def connect_to_db():
+    """Connect to the database and return the connection and cursor."""
+    try:
+        conn = psycopg2.connect(
+            dbname=DB["dbname"],
+            user=DB["user"],
+            password=DB["password"],
+            host=DB["host"],
+            port=DB["port"]
+        )
+        cursor = conn.cursor()
+        print("Connection to database successful!")
+        return conn, cursor
+    except Exception as e:
+        print("Error connecting to the database:", e)
+        return None, None
 
 def get_flight_data(aircraft: str, distance: int):
+    """Fetch flight data from a public API."""
     url = f"https://despouy.ca/flight-fuel-api/q/?aircraft={aircraft}&distance={distance}"
+    response = requests.get(url)
 
-    params = {
-        "icao": aircraft,
-        "distance": distance
-    }
-
-    response = requests.get(url, params = params)
-
-    # checking for successful connection
     if response.status_code == 200:
-        flight_data = response.json()
-        return flight_data
-    
+        return response.json()
     else:
-        print(f"Error: {response.status_code} - {response.text}")
-        return None
-    
-# api call testing
-aircraft = "60006b"
-distance = 125
+        raise HTTPException(status_code=response.status_code, detail=response.text)
 
-flight_data = get_flight_data(aircraft, distance)
-if flight_data:
-    print(flight_data)
+@app.get("/flight-data/{aircraft}/{distance}")
+def read_flight_data(aircraft: str, distance: int):
+    """API endpoint to get flight data."""
+    flight_data = get_flight_data(aircraft, distance)
+    return flight_data
+
+# To run the application, use the command:
+# uvicorn flightData:app --reload
